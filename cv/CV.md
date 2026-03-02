@@ -22,21 +22,25 @@ LinkedIn: https://linkedin.com/in/javierrodriguez-frontend · GitHub: https://gi
 ### Tech Lead — Komunicare (Mar 2023 – Present)
 Project: Accessible interactive keyboard (eye/face tracking)  
 Stack: React, Three.js, MediaPipe (JS), AWS (CloudFront, S3, EC2) · Team: 3 part-time devs
+
 - Led the development of an on-screen keyboard controlled by gaze/face tracking for users with reduced mobility.
 - Delivered 2 full product iterations, coordinating technical roadmap and implementation quality.
 - AWS delivery for landing/frontoffice + backoffice using CloudFront + S3 (private origins via OAI, HTTPS redirect, caching policies) plus logging/audit (CloudTrail, access logs).
 - Supported backend workloads on EC2 (basic ops, troubleshooting, deployment coordination).
 - Set up delivery practices: code reviews, task breakdown, CI/CD improvements, design system foundations.
 
-### Frontend Tech Lead (Outsourcing) — Ministerio del Interior (Aug 14, 2025 – Present)
+### Frontend Tech Lead (Outsourcing) — Ministerio del Interior (Aug 2025 – Present)
 Project: Registro Único de Audiencias (RUA)  
 Stack: React, Tailwind · Team: 2 frontend
+
 - Frontend tech lead: architecture, standards, module structure, routing strategy, and release coordination.
 - Built and maintained UI with React + Tailwind, focusing on scalability and consistency.
 - Deployment support on AWS/Amazon: static assets publishing and SPA routing configuration.
 
 ### Frontend Lead — Xincore (Jun 2021 – Feb 2023)
-Project: Fraxtor investment platform (blockchain-backed fractional ownership marketplace)
+Project: Fraxtor investment platform (blockchain-backed fractional ownership marketplace)  
+Stack: React, Redux, AngularJS 1.8, HTML5, CSS3, Web3, GitLab, Git
+
 - Led frontend development for Fraxtor, a platform for buying and selling asset fractional shares backed by a proprietary blockchain.
 - Rebuilt the client-facing frontend, migrating and reimplementing legacy Angular code into React.
 - Implemented key user flows including signup and KYC onboarding.
@@ -45,6 +49,7 @@ Project: Fraxtor investment platform (blockchain-backed fractional ownership mar
 ### Fullstack Developer — Epwery / 2U (Feb 2020 – May 2021)
 Project: White-label online course platform for universities in the United States
 Stack: React, Go (microservices), Agile/Scrum
+
 - Developed and maintained end-to-end platform features across frontend and backend in sprint-based delivery cycles.
 - Implemented and improved core modules for user management (professors and students), learning materials, exams, and billing flows.
 - Worked in the student support stream, delivering production fixes and UX improvements for the student portal.
