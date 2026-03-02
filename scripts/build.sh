@@ -11,8 +11,10 @@ METADATA_COMMON_FILE="$TEMPLATES_DIR/metadata-common.yaml"
 VALIDATE_SCRIPT="$ROOT_DIR/scripts/validate.sh"
 
 PANDOC_IMAGE="${PANDOC_IMAGE:-pandoc/latex:3.1}"
-PDF_ENGINE="${PDF_ENGINE:-pdflatex}"
 CV_AUTHOR="${CV_AUTHOR:-Javier Rodriguez}"
+PDF_ENGINE="${PDF_ENGINE:-}"
+
+USE_DOCKER=0
 
 log() {
   printf '[build] %s\n' "$*"
@@ -23,55 +25,90 @@ fail() {
   exit 1
 }
 
-mkdir -p "$DIST_DIR"
+find_cv_files() {
+  local files=()
 
-if [[ ! -d "$CV_DIR" ]]; then
-  fail "missing input directory: $CV_DIR"
-fi
+  [[ -f "$CV_DIR/CV.md" ]] && files+=("$CV_DIR/CV.md")
+  [[ -f "$CV_DIR/CV-ES.md" ]] && files+=("$CV_DIR/CV-ES.md")
+  [[ -f "$CV_DIR/CV-EN.md" ]] && files+=("$CV_DIR/CV-EN.md")
 
-if [[ ! -f "$CSS_FILE" ]]; then
-  fail "missing CSS template: $CSS_FILE"
-fi
+  if [[ ${#files[@]} -eq 0 ]]; then
+    fail "no CV input found. Expected cv/CV.md and/or cv/CV-ES.md/cv/CV-EN.md"
+  fi
 
-if [[ ! -f "$PDF_HEADER_FILE" ]]; then
-  fail "missing PDF header template: $PDF_HEADER_FILE"
-fi
+  printf '%s\n' "${files[@]}"
+}
 
-cv_files=()
-[[ -f "$CV_DIR/CV.md" ]] && cv_files+=("$CV_DIR/CV.md")
-[[ -f "$CV_DIR/CV-ES.md" ]] && cv_files+=("$CV_DIR/CV-ES.md")
-[[ -f "$CV_DIR/CV-EN.md" ]] && cv_files+=("$CV_DIR/CV-EN.md")
+ensure_requirements() {
+  mkdir -p "$DIST_DIR"
 
-if [[ ${#cv_files[@]} -eq 0 ]]; then
-  fail "no CV input found. Expected cv/CV.md and/or cv/CV-ES.md/cv/CV-EN.md"
-fi
+  [[ -d "$CV_DIR" ]] || fail "missing input directory: $CV_DIR"
+  [[ -f "$CSS_FILE" ]] || fail "missing CSS template: $CSS_FILE"
+  [[ -f "$PDF_HEADER_FILE" ]] || fail "missing PDF header template: $PDF_HEADER_FILE"
+}
 
-use_docker=0
-if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-  use_docker=1
-fi
+detect_runtime() {
+  if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+    USE_DOCKER=1
+    log "Using Docker image $PANDOC_IMAGE"
+    return
+  fi
 
-if [[ $use_docker -eq 0 ]] && ! command -v pandoc >/dev/null 2>&1; then
-  fail "docker is unavailable and pandoc is not installed locally"
-fi
+  if ! command -v pandoc >/dev/null 2>&1; then
+    fail "docker is unavailable and pandoc is not installed locally"
+  fi
+
+  log "Using local pandoc binary"
+}
 
 run_pandoc() {
-  if [[ $use_docker -eq 1 ]]; then
+  if [[ "$USE_DOCKER" -eq 1 ]]; then
     docker run --rm \
       -u "$(id -u):$(id -g)" \
       -v "$ROOT_DIR:/data" \
       -w /data \
       "$PANDOC_IMAGE" "$@"
-  else
-    pandoc "$@"
+    return
   fi
+
+  pandoc "$@"
 }
 
-if [[ $use_docker -eq 1 ]]; then
-  log "Using Docker image $PANDOC_IMAGE"
-else
-  log "Using local pandoc binary"
-fi
+has_xelatex() {
+  if [[ "$USE_DOCKER" -eq 1 ]]; then
+    docker run --rm \
+      --entrypoint sh \
+      "$PANDOC_IMAGE" -lc 'command -v xelatex >/dev/null 2>&1'
+    return
+  fi
+
+  command -v xelatex >/dev/null 2>&1
+}
+
+resolve_pdf_engine() {
+  if [[ -n "$PDF_ENGINE" ]]; then
+    printf '[build] %s\n' "Using PDF engine from env: $PDF_ENGINE" >&2
+    printf '%s\n' "$PDF_ENGINE"
+    return
+  fi
+
+  if has_xelatex; then
+    printf '[build] %s\n' "Detected xelatex. Using it as PDF engine." >&2
+    printf '%s\n' "xelatex"
+    return
+  fi
+
+  printf '[build] %s\n' "xelatex not available. Falling back to pdflatex." >&2
+  printf '%s\n' "pdflatex"
+}
+
+ensure_requirements
+detect_runtime
+cv_files=()
+while IFS= read -r cv_entry; do
+  cv_files+=("$cv_entry")
+done < <(find_cv_files)
+PDF_ENGINE="$(resolve_pdf_engine)"
 
 for cv_file in "${cv_files[@]}"; do
   rel_input="${cv_file#"$ROOT_DIR/"}"
