@@ -1,0 +1,20 @@
+stages:
+  - build
+
+build_cv:
+  stage: build
+  image: pandoc/latex:3.1
+  before_script:
+    - chmod +x scripts/*.sh
+  script:
+    - ./scripts/build.sh
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - dist/*
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG =~ /^v.*/
+
