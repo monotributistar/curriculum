@@ -55,6 +55,7 @@ Make targets:
 ```bash
 make build
 make clean
+make format
 ```
 
 Notes:
@@ -67,6 +68,20 @@ Notes:
 - `ERROR` (fails build): Markdown/HTML tables detected (`| ... |`, `<table>`)
 - `WARNING` (does not fail): missing top-level header (`# ...`)
 - `WARNING` (does not fail): missing `## Experience` / `## Experiencia`
+- `WARNING` (does not fail): probable glued list content (`Team: ... - Bullet...` on one line)
+
+## Why bullets were broken
+
+Pandoc relies on valid Markdown block separation.  
+When list items are written on the same line as metadata text (for example `Team: ... - Led ...`), the parser can merge the bullet into the previous paragraph and render it as "glued" text in PDF.
+
+To avoid this:
+- Keep each bullet on its own line.
+- Leave a blank line before bullet lists after `Project:` / `Stack:` lines.
+- Keep one clear blank line between sections and role blocks.
+
+Optional helper:
+- `./scripts/format.sh` normalizes line endings (`CRLF` -> `LF`) without rewriting content.
 
 ## CI/CD
 
@@ -114,4 +129,3 @@ Suggested release flow:
 3. Commit changes (without `dist/`)
 4. Tag (`git tag vX.Y.Z`)
 5. Push branch and tags (`git push && git push --tags`)
-

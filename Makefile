@@ -1,4 +1,4 @@
-.PHONY: build clean validate
+.PHONY: build clean validate format
 
 build:
 	./scripts/build.sh
@@ -11,3 +11,5 @@ validate:
 		if [ -f "$$f" ]; then ./scripts/validate.sh "$$f"; fi; \
 	done
 
+format:
+	./scripts/format.sh
