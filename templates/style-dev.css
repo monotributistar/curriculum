@@ -1,0 +1,112 @@
+:root {
+  --text: #1f2933;
+  --muted: #52606d;
+  --border: #d9e2ec;
+  --heading: #102a43;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --accent: #0b6efd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-size: 11pt;
+}
+
+body {
+  max-width: 880px;
+  margin: 24px auto;
+  padding: 34px 38px 42px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 24px rgba(16, 42, 67, 0.06);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--heading);
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid #bcccdc;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  font-size: 1.05rem;
+  margin-top: 1.35rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #334e68;
+}
+
+p,
+ul,
+ol {
+  margin: 0.4rem 0 0.8rem;
+}
+
+ul,
+ol {
+  padding-left: 1.2rem;
+}
+
+li {
+  margin: 0.28rem 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(11, 110, 253, 0.45);
+}
+
+a:hover {
+  border-bottom-style: solid;
+}
+
+code {
+  font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.92em;
+}
+
+p:first-of-type {
+  color: var(--muted);
+}
+
+@media print {
+  body {
+    margin: 0;
+    max-width: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    background: #fff;
+  }
+}
+

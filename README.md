@@ -13,7 +13,7 @@ The layout is single-column and ATS-first:
 ## Repository structure
 
 ```text
-cv/                  # CV sources (CV.md, CV-ES.md, CV-EN.md)
+cv/                  # CV sources (CV.md, CV-DEV.md, CV-XP.md, CV-ES.md, CV-EN.md)
 templates/           # shared rendering assets (CSS)
 scripts/             # build, validate, clean scripts
 dist/                # generated outputs (gitignored)
@@ -24,14 +24,20 @@ dist/                # generated outputs (gitignored)
 ## Input naming convention
 
 - Single CV only: `cv/CV.md`
+- Frontend/dev-focused variant: `cv/CV-DEV.md`
+- Visual/experimental variant: `cv/CV-XP.md`
 - Spanish + English:
   - `cv/CV-ES.md`
   - `cv/CV-EN.md`
 
 `scripts/build.sh` auto-detects available files among:
 - `cv/CV.md`
+- `cv/CV-DEV.md`
+- `cv/CV-XP.md`
 - `cv/CV-ES.md`
 - `cv/CV-EN.md`
+
+If multiple files exist, all are rendered and `dist/index.html` is generated as a landing page with links to each HTML/PDF/TXT output.
 
 ## Local build (Docker default, local fallback)
 

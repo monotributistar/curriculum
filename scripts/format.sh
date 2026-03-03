@@ -12,6 +12,8 @@ files=("$@")
 if [[ ${#files[@]} -eq 0 ]]; then
   files=(
     "$ROOT_DIR/cv/CV.md"
+    "$ROOT_DIR/cv/CV-DEV.md"
+    "$ROOT_DIR/cv/CV-XP.md"
     "$ROOT_DIR/cv/CV-ES.md"
     "$ROOT_DIR/cv/CV-EN.md"
   )
@@ -30,4 +32,3 @@ for file in "${files[@]}"; do
   mv "$tmp_file" "$file"
   echo "[format] normalized line endings: $file"
 done
-

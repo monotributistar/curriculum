@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CV_DIR="$ROOT_DIR/cv"
 DIST_DIR="$ROOT_DIR/dist"
 TEMPLATES_DIR="$ROOT_DIR/templates"
-CSS_FILE="$TEMPLATES_DIR/style.css"
+DEFAULT_CSS_FILE="$TEMPLATES_DIR/style.css"
 PDF_HEADER_FILE="$TEMPLATES_DIR/pdf-header.tex"
 METADATA_COMMON_FILE="$TEMPLATES_DIR/metadata-common.yaml"
 VALIDATE_SCRIPT="$ROOT_DIR/scripts/validate.sh"
@@ -29,11 +29,13 @@ find_cv_files() {
   local files=()
 
   [[ -f "$CV_DIR/CV.md" ]] && files+=("$CV_DIR/CV.md")
+  [[ -f "$CV_DIR/CV-DEV.md" ]] && files+=("$CV_DIR/CV-DEV.md")
+  [[ -f "$CV_DIR/CV-XP.md" ]] && files+=("$CV_DIR/CV-XP.md")
   [[ -f "$CV_DIR/CV-ES.md" ]] && files+=("$CV_DIR/CV-ES.md")
   [[ -f "$CV_DIR/CV-EN.md" ]] && files+=("$CV_DIR/CV-EN.md")
 
   if [[ ${#files[@]} -eq 0 ]]; then
-    fail "no CV input found. Expected cv/CV.md and/or cv/CV-ES.md/cv/CV-EN.md"
+    fail "no CV input found. Expected cv/CV*.md variants"
   fi
 
   printf '%s\n' "${files[@]}"
@@ -43,7 +45,7 @@ ensure_requirements() {
   mkdir -p "$DIST_DIR"
 
   [[ -d "$CV_DIR" ]] || fail "missing input directory: $CV_DIR"
-  [[ -f "$CSS_FILE" ]] || fail "missing CSS template: $CSS_FILE"
+  [[ -f "$DEFAULT_CSS_FILE" ]] || fail "missing CSS template: $DEFAULT_CSS_FILE"
   [[ -f "$PDF_HEADER_FILE" ]] || fail "missing PDF header template: $PDF_HEADER_FILE"
 }
 
@@ -102,6 +104,112 @@ resolve_pdf_engine() {
   printf '%s\n' "pdflatex"
 }
 
+resolve_css_path() {
+  local base_name="$1"
+
+  if [[ "$base_name" == *"-XP" ]] && [[ -f "$TEMPLATES_DIR/style-xp.css" ]]; then
+    printf '%s\n' "templates/style-xp.css"
+    return
+  fi
+
+  if [[ "$base_name" == *"-DEV" ]] && [[ -f "$TEMPLATES_DIR/style-dev.css" ]]; then
+    printf '%s\n' "templates/style-dev.css"
+    return
+  fi
+
+  if [[ -f "$TEMPLATES_DIR/style-dev.css" ]]; then
+    printf '%s\n' "templates/style-dev.css"
+    return
+  fi
+
+  printf '%s\n' "templates/style.css"
+}
+
+generate_index_page() {
+  local names=("$@")
+  local index_file="$DIST_DIR/index.html"
+
+  cat >"$index_file" <<'HTML'
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Javier Rodriguez - CV Outputs</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #52606d;
+      --border: #d9e2ec;
+      --accent: #0b6efd;
+    }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    main {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+    .title {
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    .links a {
+      color: var(--accent);
+      text-decoration: none;
+      margin-right: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>CV Outputs</h1>
+    <p>Generated from Markdown sources in this repository.</p>
+HTML
+
+  for base_name in "${names[@]}"; do
+    {
+      printf '    <section class="card">\n'
+      printf '      <div class="title">%s</div>\n' "$base_name"
+      printf '      <div class="links">\n'
+      printf '        <a href="%s.html">HTML</a>\n' "$base_name"
+      printf '        <a href="%s.pdf">PDF</a>\n' "$base_name"
+      printf '        <a href="%s.txt">TXT</a>\n' "$base_name"
+      printf '      </div>\n'
+      printf '    </section>\n'
+    } >>"$index_file"
+  done
+
+  cat >>"$index_file" <<'HTML'
+  </main>
+</body>
+</html>
+HTML
+
+  log "Generated dist/index.html"
+}
+
 ensure_requirements
 detect_runtime
 cv_files=()
@@ -109,6 +217,7 @@ while IFS= read -r cv_entry; do
   cv_files+=("$cv_entry")
 done < <(find_cv_files)
 PDF_ENGINE="$(resolve_pdf_engine)"
+generated_names=()
 
 for cv_file in "${cv_files[@]}"; do
   rel_input="${cv_file#"$ROOT_DIR/"}"
@@ -116,6 +225,7 @@ for cv_file in "${cv_files[@]}"; do
   html_out="dist/${base_name}.html"
   pdf_out="dist/${base_name}.pdf"
   txt_out="dist/${base_name}.txt"
+  css_path="$(resolve_css_path "$base_name")"
 
   log "Validating $rel_input"
   "$VALIDATE_SCRIPT" "$cv_file"
@@ -142,7 +252,7 @@ for cv_file in "${cv_files[@]}"; do
     --from markdown \
     --to html5 \
     --standalone \
-    --css "templates/style.css" \
+    --css "$css_path" \
     "${metadata_args[@]}" \
     --metadata "title=$title" \
     -o "$html_out"
@@ -168,7 +278,11 @@ for cv_file in "${cv_files[@]}"; do
     --to plain \
     "${metadata_args[@]}" \
     -o "$txt_out"
+
+  generated_names+=("$base_name")
 done
+
+generate_index_page "${generated_names[@]}"
 
 log "Build completed. Outputs:"
 ls -1 "$DIST_DIR"
