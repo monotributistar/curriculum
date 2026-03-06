@@ -31,6 +31,8 @@ find_cv_files() {
   [[ -f "$CV_DIR/CV.md" ]] && files+=("$CV_DIR/CV.md")
   [[ -f "$CV_DIR/CV-DEV.md" ]] && files+=("$CV_DIR/CV-DEV.md")
   [[ -f "$CV_DIR/CV-XP.md" ]] && files+=("$CV_DIR/CV-XP.md")
+  [[ -f "$CV_DIR/CV-HUMAN.md" ]] && files+=("$CV_DIR/CV-HUMAN.md")
+  [[ -f "$CV_DIR/CV-HUMAN-EN.md" ]] && files+=("$CV_DIR/CV-HUMAN-EN.md")
   [[ -f "$CV_DIR/CV-ES.md" ]] && files+=("$CV_DIR/CV-ES.md")
   [[ -f "$CV_DIR/CV-EN.md" ]] && files+=("$CV_DIR/CV-EN.md")
 
@@ -109,6 +111,11 @@ resolve_css_path() {
 
   if [[ "$base_name" == *"-XP" ]] && [[ -f "$TEMPLATES_DIR/style-xp.css" ]]; then
     printf '%s\n' "templates/style-xp.css"
+    return
+  fi
+
+  if [[ "$base_name" == *"-HUMAN"* ]] && [[ -f "$TEMPLATES_DIR/style-human.css" ]]; then
+    printf '%s\n' "templates/style-human.css"
     return
   fi
 
@@ -283,6 +290,10 @@ for cv_file in "${cv_files[@]}"; do
 done
 
 generate_index_page "${generated_names[@]}"
+
+# Keep HTML asset paths valid when opening files directly from dist/.
+rm -rf "$DIST_DIR/templates"
+cp -R "$TEMPLATES_DIR" "$DIST_DIR/templates"
 
 log "Build completed. Outputs:"
 ls -1 "$DIST_DIR"

@@ -13,7 +13,7 @@ The layout is single-column and ATS-first:
 ## Repository structure
 
 ```text
-cv/                  # CV sources (CV.md, CV-DEV.md, CV-XP.md, CV-ES.md, CV-EN.md)
+cv/                  # CV sources (CV.md, CV-DEV.md, CV-XP.md, CV-HUMAN.md, CV-ES.md, CV-EN.md)
 templates/           # shared rendering assets (CSS)
 scripts/             # build, validate, clean scripts
 dist/                # generated outputs (gitignored)
@@ -26,6 +26,7 @@ dist/                # generated outputs (gitignored)
 - Single CV only: `cv/CV.md`
 - Frontend/dev-focused variant: `cv/CV-DEV.md`
 - Visual/experimental variant: `cv/CV-XP.md`
+- Human-friendly visual variant (photo + 2 columns): `cv/CV-HUMAN.md`
 - Spanish + English:
   - `cv/CV-ES.md`
   - `cv/CV-EN.md`
@@ -34,6 +35,7 @@ dist/                # generated outputs (gitignored)
 - `cv/CV.md`
 - `cv/CV-DEV.md`
 - `cv/CV-XP.md`
+- `cv/CV-HUMAN.md`
 - `cv/CV-ES.md`
 - `cv/CV-EN.md`
 

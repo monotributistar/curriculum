@@ -14,6 +14,7 @@ if [[ ${#files[@]} -eq 0 ]]; then
     "$ROOT_DIR/cv/CV.md"
     "$ROOT_DIR/cv/CV-DEV.md"
     "$ROOT_DIR/cv/CV-XP.md"
+    "$ROOT_DIR/cv/CV-HUMAN.md"
     "$ROOT_DIR/cv/CV-ES.md"
     "$ROOT_DIR/cv/CV-EN.md"
   )
