@@ -45,7 +45,7 @@ Professional working proficiency
 ::: {.col-right}
 ## About me
 
-Proactive, solutions-driven frontend engineer with 10+ years of experience building web products and interactive systems, focused on React, TypeScript, and scalable UI architecture.
+Proactive, solutions-driven frontend engineer with 10+ years of experience building web products and interactive systems, focused on React, TypeScript, and scalable UI architecture. I work AI-native: Claude Code and OpenAI Codex daily, with agent-reviewed PRs and human-owned architecture and on-device testing.
 
 Strong track record leading small teams, improving release quality, and translating complex requirements into clear product outcomes.
 
@@ -60,7 +60,7 @@ Strong track record leading small teams, improving release quality, and translat
 ### Tech Lead · Komunicare
 March 2023 - Present
 
-Own technical direction for an accessible gaze/face-controlled keyboard for users with reduced mobility, coordinating roadmap execution and AWS deployments.
+Own technical direction for a gaze/face-controlled keyboard and AAC pictogram board for people who can't speak or type: head-mounted pupil camera fused with head pose on Android, tracking shipped as version-pinned native plugins, math kept in sync across TypeScript and Kotlin with golden test vectors; AWS deployments.
 
 ### Frontend Tech Lead (Outsourcing) · Ministry of the Interior (RUA)
 August 2025 - Present
@@ -77,9 +77,13 @@ February 2020 - May 2021
 
 Built frontend and backend features for a US university white-label platform, improving modules for users, learning materials, exams, and billing operations.
 
+## Projects
+
+**CardForge** (personal) · editor for multicolor 3D-printable objects: backend geometry compiler exporting 3MF, preview of the compiled output, versioned schema with migrations.
+
 ## Skills
 
-React · TypeScript · JavaScript · HTML · CSS · Tailwind · Three.js · MediaPipe (JS) · CI/CD · GitHub/GitLab · AWS (CloudFront, S3, EC2) · UI design · Accessibility
+TypeScript · React · JavaScript · HTML · CSS · Tailwind · Three.js · MediaPipe (JS) · Kotlin/Android · Jest · Python · CI/CD · GitHub/GitLab · AWS (CloudFront, S3, EC2) · Claude Code / OpenAI Codex · UI design · Accessibility
 
 ## Relevant previous experience
 

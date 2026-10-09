@@ -1,5 +1,5 @@
 # Javier Rodríguez
-Senior Frontend Developer / Frontend Tech Lead (React, TypeScript, AI-assisted workflows)  
+Senior Frontend Developer / Frontend Tech Lead (React, TypeScript, AI-native workflows)  
 Argentina (Remote) · Phone: +5492213168897 · Email: javrod.work@gmail.com  
 LinkedIn: https://linkedin.com/in/javierrodriguez-frontend · GitHub: https://github.com/monotributistar · Portfolio: https://minaray.xyz
 
@@ -7,12 +7,16 @@ LinkedIn: https://linkedin.com/in/javierrodriguez-frontend · GitHub: https://gi
 - Senior Frontend Developer / Tech Lead with 10+ years delivering production web products.
 - Strong in React + TypeScript, UI architecture, and delivery quality (CI/CD, testing, reviews).
 - Experience leading teams and building scalable frontends across government, fintech, and edtech domains.
+- AI-native workflow: daily Claude Code and OpenAI Codex, agent-reviewed PRs, and project knowledge kept as agent skills/invariants updated after incidents; humans own architecture and on-device acceptance testing.
 
 ## Core Skills
-- Frontend: React, TypeScript, JavaScript, HTML, CSS, Tailwind
+- Frontend: TypeScript, React, JavaScript, HTML, CSS, Tailwind
 - UI/Architecture: component systems, design systems, routing, performance, accessibility
+- Testing/Quality: Jest, type checks, regression tests that fail without the fix, CI verify gates, measured on-device evaluation
+- Mobile/Native: Android, Kotlin (tracking math, native plugins)
+- Backend: Go (microservices), Python (geometry compile service and tests), Node.js
 - Delivery: GitHub, GitLab CI/CD, Cloudflare, AWS (CloudFront, S3, EC2)
-- AI/LLM: AI-assisted development workflows, prompt engineering, LLM feature integration in web products
+- AI/LLM: Claude Code and OpenAI Codex daily, agent-reviewed PRs, agent skills/invariants as project knowledge, prompt engineering, LLM feature integration in web products
 - Engineering: OOP, Agile/Scrum, UX/UI collaboration, Web3 integrations
 - 3D / Vision: Three.js, MediaPipe (JS)
 - Additional: data visualization (D3.js, GIS), digital signage, interactive installations, Arduino, Unity 3D
@@ -20,14 +24,16 @@ LinkedIn: https://linkedin.com/in/javierrodriguez-frontend · GitHub: https://gi
 ## Experience
 
 ### Tech Lead — Komunicare (Mar 2023 – Present)
-Project: Accessible interactive keyboard (eye/face tracking)  
-Stack: React, Three.js, MediaPipe (JS), AWS (CloudFront, S3, EC2) · Team: 3 part-time devs
+Project: Communication app for people who can't speak or type — gaze/face-controlled on-screen keyboard and AAC pictogram board  
+Stack: React, TypeScript, Three.js, MediaPipe (JS), Kotlin, Android, Jest, AWS (CloudFront, S3, EC2) · Team: 3 part-time devs
 
-- Led the development of an on-screen keyboard controlled by gaze/face tracking for users with reduced mobility.
-- Delivered 2 full product iterations, coordinating technical roadmap and implementation quality.
-- AWS delivery for landing/frontoffice + backoffice using CloudFront + S3 (private origins via OAI, HTTPS redirect, caching policies) plus logging/audit (CloudTrail, access logs).
-- Supported backend workloads on EC2 (basic ops, troubleshooting, deployment coordination).
-- Set up delivery practices: code reviews, task breakdown, CI/CD improvements, design system foundations.
+- Led an on-screen keyboard and an AAC pictogram board controlled by gaze/face tracking for users with reduced mobility; delivered 2 full product iterations.
+- Made eye-gaze input work on a real Android tablet: a head-mounted USB pupil camera fused with head pose from the front camera.
+- Shipped tracking as native plugins/packages consumed via pinned versions, with a check that Android and web build the same version; fixes go into the plugin, not patched in the app.
+- Tracking math implemented in both TypeScript and Kotlin, kept in sync with golden test vectors.
+- Evaluated 5- vs 9-point calibration (accuracy vs. calibration time and headband slip) and ran measured on-device evaluations to choose tradeoffs.
+- Verification discipline: type checks, Jest baselines, tests confirmed to fail without the fix, CI verify gate.
+- AWS delivery with CloudFront + S3 (OAI, HTTPS redirect, caching, CloudTrail/access logs) and EC2 support; code reviews, CI/CD and design-system foundations.
 
 ### Frontend Tech Lead (Outsourcing) — Ministerio del Interior (Aug 2025 – Present)
 Project: Registro Único de Audiencias (RUA)  
@@ -92,6 +98,17 @@ Stack: React, Go (microservices), Agile/Scrum
 
 #### Java / C++ / Installations — Draggndropp Visual Crew (2008 – 2011)
 - Developed interactive kiosks, digital signage, VJing tooling, and computer vision-related applications.
+
+## Projects
+
+### CardForge — Personal project (Jul 2026 – Aug 2026)
+Editor for multicolor 3D-printable objects  
+Stack: TypeScript, Python · Output: 3MF
+
+- Single geometry compiler in a backend service that partitions objects into separate material volumes and exports 3MF; replaced the previous OpenSCAD pipeline.
+- Preview renders the actual compiled output, with debounced compilation and a stale-response guard.
+- Versioned document schema with migration of existing designs.
+- Verified with Python tests, TypeScript checks, and measurements of exported geometry.
 
 ## Education
 - University Programmer (up to 3rd year), UNLP
